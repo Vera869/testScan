@@ -21,7 +21,16 @@ function App() {
   // TODO: Реализовать функцию для добавления/удаления выбранных строк в состояние selectedRows
   const toggleRowSelection = (id: number) => {
     // Реализуйте логику выбора строк (добавление/удаление id)
-    
+    let isSelectedRow: Boolean = Boolean(selectedRows.indexOf(id) !== -1);
+    if(isSelectedRow) {
+      let newSelectedRows = selectedRows.filter(row => row !== id);
+      setSelectedRows(newSelectedRows);
+    } else {
+      const addId = (id: number) => {
+        setSelectedRows(state => [...state, id])
+      }
+      addId(id);
+    }
   };
 
   // Состояние для колонок таблицы
