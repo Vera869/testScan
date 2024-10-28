@@ -25,19 +25,13 @@ function App() {
   // TODO: Реализовать функцию для добавления/удаления выбранных строк в состояние selectedRows
   const toggleRowSelection = (id: number) => {
     // Реализуйте логику выбора строк (добавление/удаление id)
-    let isSelectedRow: Boolean = selectedRows.includes(id);
-    console.log(selectedRows);
-    console.log(isSelectedRow);
-    if(isSelectedRow) {
-      let newSelectedRows = selectedRows.filter(row => row !== id);
-      console.log("filter!");
-      setSelectedRows(newSelectedRows);
-    } else {
-      const addId = (id: number) => {
-        setSelectedRows(state => [...state, id])
+    setSelectedRows(prevSelectedRows => {
+      if (prevSelectedRows.includes(id)) {
+        return prevSelectedRows.filter(rowId => rowId !== id);
+      } else {
+        return [...prevSelectedRows, id];
       }
-      addId(id);
-    }
+    });
   };
 
   // Состояние для колонок таблицы
@@ -83,12 +77,12 @@ function App() {
     {
       name: 'Value',
       // TODO: Установите данные для серии "Value" (значение продукта)
-      // data: selectedData.map...
+      data: selectedData.map((row) => row.value),
     },
     {
       name: 'Quantity',
       // TODO: Установите данные для серии "Quantity" (количество продукта)
-      // data: selectedData.map...
+      data: selectedData.map((row) => row.quantity)
     },
   ];
 
