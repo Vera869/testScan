@@ -18,19 +18,20 @@ function App() {
   // Состояние для отслеживания выбранных строк
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
 
+  // useEffect(() => {
+    console.log(selectedRows);
+  // }, [selectedRows])
+
   // TODO: Реализовать функцию для добавления/удаления выбранных строк в состояние selectedRows
   const toggleRowSelection = (id: number) => {
     // Реализуйте логику выбора строк (добавление/удаление id)
-    let isSelectedRow: Boolean = Boolean(selectedRows.indexOf(id) !== -1);
-    if(isSelectedRow) {
-      let newSelectedRows = selectedRows.filter(row => row !== id);
-      setSelectedRows(newSelectedRows);
-    } else {
-      const addId = (id: number) => {
-        setSelectedRows(state => [...state, id])
+    setSelectedRows(prevSelectedRows => {
+      if (prevSelectedRows.includes(id)) {
+        return prevSelectedRows.filter(rowId => rowId !== id);
+      } else {
+        return [...prevSelectedRows, id];
       }
-      addId(id);
-    }
+    });
   };
 
   // Состояние для колонок таблицы
@@ -43,19 +44,20 @@ function App() {
       selectedRows,
       // TODO: Добавить рендеринг чекбокса с использованием компонента Checkbox
       cellRenderer: ({ rowData, column }: any) => (
-        <Checkbox
-        // Реализуйте проверку и обработку изменения чекбокса
-        // onChange={() => toggleRowSelection(rowData.id)}
-        />
+         <Checkbox
+          // Реализуйте проверку и обработку изменения чекбокса
+          onChange={() => toggleRowSelection(rowData.id)}
+          />
       ),
     },
-    { key: 'name', title: 'Product Name', dataKey: 'name', width: 200 },
+    { key: 'name', title: 'Product Name', dataKey: 'name', width: 200, height: 40 },
     { key: 'value', title: 'Value', dataKey: 'value', width: 150 },
     { key: 'quantity', title: 'Quantity', dataKey: 'quantity', width: 150 },
   ]);
 
   // TODO: Отфильтровать данные на основе выбранных строк (selectedRows)
-  const selectedData: [] = [];
+
+  const selectedData: any[] = selectedRows?.map(num => initialData.find(({ id }) => id === num));
 
   // Опции для графика ApexCharts
   const chartOptions = {
@@ -75,12 +77,12 @@ function App() {
     {
       name: 'Value',
       // TODO: Установите данные для серии "Value" (значение продукта)
-      // data: selectedData.map...
+      data: selectedData.map((row) => row.value),
     },
     {
       name: 'Quantity',
       // TODO: Установите данные для серии "Quantity" (количество продукта)
-      // data: selectedData.map...
+      data: selectedData.map((row) => row.quantity)
     },
   ];
 
@@ -100,7 +102,8 @@ function App() {
 
       {/* BaseTable Component with Checkboxes */}
       <BaseTable
-        // Добавить данные для таблицы
+        data={initialData}
+        columns={columns}
         width={600}
         height={300}
       />
