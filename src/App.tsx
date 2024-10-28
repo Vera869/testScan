@@ -18,10 +18,6 @@ function App() {
   // Состояние для отслеживания выбранных строк
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
 
-  // useEffect(() => {
-    console.log(selectedRows);
-  // }, [selectedRows])
-
   // TODO: Реализовать функцию для добавления/удаления выбранных строк в состояние selectedRows
   const toggleRowSelection = (id: number) => {
     // Реализуйте логику выбора строк (добавление/удаление id)
