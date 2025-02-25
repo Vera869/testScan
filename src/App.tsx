@@ -39,7 +39,9 @@ function App() {
       dataKey: 'id',
       selectedRows,
       // TODO: Добавить рендеринг чекбокса с использованием компонента Checkbox
-      cellRenderer: ({ rowData, column }: any) => (
+      cellRenderer: ({ rowData, 
+        // column
+       }: any) => (
          <Checkbox
           // Реализуйте проверку и обработку изменения чекбокса
           onChange={() => toggleRowSelection(rowData.id)}
